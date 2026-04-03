@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Safe Ops"
+  short_description: "面向提交、推送、分支和认证检查的安全非交互式 Git 规范"
+  default_prompt: "Use $git-safe-ops to handle safe non-interactive Git work, including commits, pushes, branch decisions, reverts, worktrees, and gh auth checks."
