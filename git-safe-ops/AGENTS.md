@@ -2,15 +2,13 @@
 
 # Git Safe Ops
 
-在执行 `git` 或 `gh` 相关操作时，遵循以下规则：
+在执行 `git` 或 `gh` 相关操作时遵循这些规则：
 
-- 默认保持非交互式执行，先导出 `GIT_TERMINAL_PROMPT=0`。
-- 只要操作涉及远端、认证或 `gh`，先检查 `gh` 是否已安装并已登录。
-- 默认在当前工作分支提交和推送；除非用户明确要求，否则不要新建或切换分支。
-- 不要在 `main` / `master` 上开发重大功能；只允许直接处理明确的小 bugfix。
-- 不要对共享分支使用 `git reset` 或 `git push --force` 改写历史；撤销已发布提交时使用 `git revert`。
+- 默认保持非交互：先导出 `GIT_TERMINAL_PROMPT=0`。
+- 只要涉及远端、认证或 `gh`，先检查 `gh` 是否已安装并已登录。
+- 默认留在当前工作分支；除非用户明确要求，否则不要新建或切换分支。
+- 不要在 `main` / `master` 上直接做重大功能；回滚已发布提交时使用 `git revert`，不要对共享分支使用 `git reset` 或 `git push --force`。
 - 需要并行处理多个分支任务时，优先使用 `git worktree`。
-- 让失败直接暴露，不要交互登录，不要静默降级，不要伪造成功结果。
 
 ## 前置检查
 
@@ -31,4 +29,4 @@ if ! gh auth status --hostname github.com >/dev/null 2>&1; then
 fi
 ```
 
-如果项目里还保留了完整 pack，优先读取 `.agent-packs/git-safe-ops/references/git-rules.md`，并直接运行 `.agent-packs/git-safe-ops/scripts/git-preflight.sh`。
+需要更完整的规则时，读取 `.agent-packs/git-safe-ops/references/git-rules.md`，或直接运行 `.agent-packs/git-safe-ops/scripts/git-preflight.sh`。
