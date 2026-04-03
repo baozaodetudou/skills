@@ -31,6 +31,4 @@ if ! gh auth status --hostname github.com >/dev/null 2>&1; then
 fi
 ```
 
-## 详细参考
-
-读取 [`references/git-rules.md`](./references/git-rules.md) 获取完整规则、认证方案和命令模板。
+如果项目里还保留了完整 pack，优先读取 `.agent-packs/git-safe-ops/references/git-rules.md`，并直接运行 `.agent-packs/git-safe-ops/scripts/git-preflight.sh`。

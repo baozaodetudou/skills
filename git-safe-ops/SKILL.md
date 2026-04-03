@@ -10,6 +10,14 @@ description: 在执行 Git 或 GitHub CLI 相关操作时使用，包括 `git st
 - 在准备执行任何 `git` 或 `gh` 命令前，先按本 skill 的最小流程检查分支、认证和失败处理方式。
 - 在需要提交、推送、回滚、创建 `worktree`、编写 Git 自动化脚本或 CI 中配置 Git 认证时，使用本 skill。
 
+## 典型触发
+
+- “先帮我检查 `gh` 登录状态，再把当前分支安全推上去”
+- “我要写一个非交互式的 Git 发布脚本”
+- “这个提交已经推远端了，帮我安全回滚”
+- “我要同时开两个分支开发，用 `git worktree` 搭一下”
+- “把这套 Git 规则装到 Codex / Claude / Gemini 项目里”
+
 ## 先做判断
 
 - 判断当前任务是不是重大功能或大需求。若是，不要直接在 `main` / `master` 开发。
@@ -23,7 +31,7 @@ description: 在执行 Git 或 GitHub CLI 相关操作时使用，包括 `git st
 ```bash
 export GIT_TERMINAL_PROMPT=0
 ```
-2. 只要操作会访问远端或依赖 `gh` 身份，先运行前置检查：
+2. 只要操作会访问远端或依赖 `gh` 身份，优先直接运行 `scripts/git-preflight.sh`；如果当前环境没有这个脚本，再用下面的检查片段：
 ```bash
 if ! command -v gh >/dev/null 2>&1; then
   echo "ERROR: GitHub CLI (gh) not installed" >&2
@@ -45,8 +53,10 @@ fi
 - 需要编写 Git 自动化脚本时，使用 `#!/bin/bash` 和 `set -euo pipefail`，并保留非交互式失败退出。
 - 需要设置认证方式时，优先使用 SSH key；其次是 `gh` credential helper；只有在合适的 CI 场景下再考虑 `GIT_ASKPASS` 或 `http.extraHeader`。
 - 需要提交说明时，同时写中文和英文。
+- 需要把这套规则落到真实项目时，优先运行 `scripts/install-pack.sh`，而不是手工复制零散文件。
 
-## 读取详细参考
+## 读取资源
 
 - 需要分支策略、认证方案、脚本模板、`worktree` 示例或 PR 约束时，读取 [references/git-rules.md](references/git-rules.md)。
-- 在执行真实 `git push`、`git fetch`、`git pull`、`gh pr` 之前，优先对照参考文件里的前置检查和命令模板。
+- 需要先做 `gh` 安装与登录检查时，运行 `scripts/git-preflight.sh`。
+- 需要把规则安装到某个项目时，运行 `scripts/install-pack.sh`。

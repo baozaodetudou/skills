@@ -31,6 +31,4 @@ if ! gh auth status --hostname github.com >/dev/null 2>&1; then
 fi
 ```
 
-## Detailed Reference
-
-If this pack is used as-is, keep [`references/git-rules.md`](./references/git-rules.md) alongside this file for the full policy and command templates.
+If the full pack is installed in the project, use `.agent-packs/git-safe-ops/references/git-rules.md` for the long form and `.agent-packs/git-safe-ops/scripts/git-preflight.sh` for the auth check.
