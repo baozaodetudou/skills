@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Harness"
+  short_description: "Gstack / GSD / Superpowers 的 Codex 工作流路由"
+  default_prompt: "Use $codex-harness to route ambiguous, multi-step, or risky Codex work through Gstack for decisions, GSD for context freezing, and Superpowers for execution."

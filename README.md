@@ -5,6 +5,7 @@
 当前已包含：
 
 - `git-safe-ops`：面向 Git 与 GitHub CLI 的安全、非交互式操作规范，覆盖分支策略、认证检查、提交与推送约束、`worktree`、`revert` 和 PR 协作要求。
+- `codex-harness`：把 Gstack 的方向决策、GSD 的上下文冻结、Superpowers 的执行流程合并成一套 Codex 工作流路由。
 
 ## 支持矩阵
 
@@ -12,6 +13,8 @@
 - Codex project instructions：[`git-safe-ops/AGENTS.md`](./git-safe-ops/AGENTS.md)
 - Claude Code：[`git-safe-ops/CLAUDE.md`](./git-safe-ops/CLAUDE.md)
 - Gemini CLI：[`git-safe-ops/GEMINI.md`](./git-safe-ops/GEMINI.md)
+- Codex skill：[`codex-harness/SKILL.md`](./codex-harness/SKILL.md)
+- Codex skill metadata：[`codex-harness/agents/openai.yaml`](./codex-harness/agents/openai.yaml)
 
 ## 使用方式
 
@@ -44,6 +47,34 @@
 ```bash
 ./git-safe-ops/scripts/install-pack.sh --agent codex --target /path/to/project
 ```
+
+### Codex Harness
+
+`codex-harness` 是一层工作流路由，不是执行框架本身。它会按任务形态在三者之间切换：
+
+- `Gstack`：先做方向判断、方案评审、风险决策
+- `GSD`：固定项目上下文、边界、验证方式
+- `Superpowers`：执行、TDD、debug、review、收尾
+
+安装到 Codex：
+
+```bash
+mkdir -p ~/.codex/skills
+ln -sfn /path/to/skills/codex-harness ~/.codex/skills/codex-harness
+```
+
+安装后重启 Codex。使用时可以直接说：
+
+```text
+use $codex-harness for this task
+```
+
+适合的场景：
+
+- 需求模糊、需要先定方向
+- 长任务、跨会话、容易漂移的项目
+- 需要先冻结上下文，再进入分步实现
+- 需要在执行前后加入 TDD、debug、review、QA 流程
 
 ### Claude Code
 
