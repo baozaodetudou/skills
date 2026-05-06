@@ -60,7 +60,7 @@
 
 ```bash
 mkdir -p ~/.codex/skills
-ln -sfn /path/to/skills/codex-harness ~/.codex/skills/codex-harness
+cp -R /path/to/skills/codex-harness ~/.codex/skills/codex-harness
 ```
 
 安装后重启 Codex。使用时可以直接说：
@@ -76,17 +76,16 @@ use $codex-harness for this task
 - 需要先冻结上下文，再进入分步实现
 - 需要在执行前后加入 TDD、debug、review、QA 流程
 
-### 推荐本地目录规范
+### Codex-only 本地目录规范
 
-为了避免同一套 skill 被复制多份，推荐只保留一个真源，其他位置只用符号链接暴露：
+推荐把 Codex CLI/App 的运行时内容全部放在 `~/.codex` 下，和 `.agents`、`.claude`、`.cc-switch` 等其他工具目录分开。这个仓库只作为发布和编辑来源；安装到 Codex 时使用复制，不使用跨目录软链接。
 
 ```text
-~/.codex/skills/codex-harness -> /path/to/skills/codex-harness
-~/.codex/skills/git-safe-ops  -> /path/to/skills/git-safe-ops
-~/.codex/superpowers          # Superpowers 上游真源
-~/.agents/skills/superpowers  -> ~/.codex/superpowers/skills
-~/.codex/get-shit-done        # GSD 上游真源
-~/.claude/skills/gstack       # Gstack 上游真源
+~/.codex/skills/codex-harness  # 从本仓库复制安装
+~/.codex/skills/git-safe-ops   # 从本仓库复制安装
+~/.codex/skills/gstack         # Gstack Codex adapter
+~/.codex/superpowers           # Superpowers for Codex
+~/.codex/get-shit-done         # GSD for Codex
 ```
 
 Codex 的常驻 skill 列表建议保持精简：
@@ -95,8 +94,28 @@ Codex 的常驻 skill 列表建议保持精简：
 - `codex-harness`
 - `git-safe-ops`
 - `gstack` 主入口
+- `superpowers:*` 由 `~/.codex/superpowers` 提供
 
 不建议把所有 `gstack-*`、`gsd-*` 或 Superpowers 子技能同时复制进 `~/.codex/skills`。需要时由 `codex-harness` 路由到对应流程，避免启动上下文臃肿和规则冲突。
+
+一键安装本仓库内的 Codex skills：
+
+```bash
+./scripts/install-codex-runtime.sh
+```
+
+如果旧环境里存在 `~/.agents/skills/superpowers`、`~/.agents/.skill-lock.json` 或 `~/.cc-switch/skills` 这类跨目录暴露，可以一并移到 `~/.codex/skill-backups/`：
+
+```bash
+./scripts/install-codex-runtime.sh --clean-exposed
+```
+
+安装完成后的边界：
+
+- Codex 使用 `~/.codex/**`
+- Claude Code 使用 `~/.claude/**`
+- 其他 agent 使用自己的目录
+- 不建立 `~/.agents/skills/superpowers -> ~/.codex/superpowers/skills` 这种混用链接
 
 ### Claude Code
 
@@ -119,6 +138,17 @@ Codex 的常驻 skill 列表建议保持精简：
 ## 目录结构
 
 ```text
+codex-harness/
+├── SKILL.md
+├── agents/
+│   └── openai.yaml
+└── references/
+    ├── gsd-context.md
+    ├── gstack-decision.md
+    ├── qa-checklist.md
+    ├── superpowers-debugging.md
+    ├── superpowers-execution.md
+    └── superpowers-tdd.md
 git-safe-ops/
 ├── AGENTS.md
 ├── CLAUDE.md
@@ -131,6 +161,8 @@ git-safe-ops/
 │   └── install-pack.sh
 └── references/
     └── git-rules.md
+scripts/
+└── install-codex-runtime.sh
 ```
 
 ## 说明
