@@ -14,9 +14,9 @@ Use this for implementation after direction is clear.
 
 ## Planning Scale
 
-- Small: no on-disk plan; use a short internal checklist.
-- Medium: use the normal Codex plan tool in chat.
-- Large or resumable: create `.codex-tasks/<task>/SPEC.md`,
+- **Small**: no on-disk plan; use a short internal checklist.
+- **Medium**: use the normal Codex plan tool in chat.
+- **Large or resumable**: create `.codex-tasks/<task>/SPEC.md`,
   `TODO.csv`, and `PROGRESS.md`, or use `$taskmaster` when available.
 
 ## Execution Rules

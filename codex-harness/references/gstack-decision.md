@@ -16,11 +16,11 @@ Keep the decision compact:
 
 ## Review Lenses
 
-- Product: user problem, scope boundary, success signal, workflow fit.
-- Engineering: system shape, data flow, dependencies, migration cost.
-- Security/Reliability: permissions, secrets, destructive operations,
+- **Product**: user problem, scope boundary, success signal, workflow fit.
+- **Engineering**: system shape, data flow, dependencies, migration cost.
+- **Security/Reliability**: permissions, secrets, destructive operations,
   recovery path, failure modes.
-- QA: observable behavior, edge cases, test strategy, verification command.
+- **QA**: observable behavior, edge cases, test strategy, verification command.
 
 ## Decision Rules
 

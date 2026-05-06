@@ -76,6 +76,28 @@ use $codex-harness for this task
 - 需要先冻结上下文，再进入分步实现
 - 需要在执行前后加入 TDD、debug、review、QA 流程
 
+### 推荐本地目录规范
+
+为了避免同一套 skill 被复制多份，推荐只保留一个真源，其他位置只用符号链接暴露：
+
+```text
+~/.codex/skills/codex-harness -> /path/to/skills/codex-harness
+~/.codex/skills/git-safe-ops  -> /path/to/skills/git-safe-ops
+~/.codex/superpowers          # Superpowers 上游真源
+~/.agents/skills/superpowers  -> ~/.codex/superpowers/skills
+~/.codex/get-shit-done        # GSD 上游真源
+~/.claude/skills/gstack       # Gstack 上游真源
+```
+
+Codex 的常驻 skill 列表建议保持精简：
+
+- `.system`
+- `codex-harness`
+- `git-safe-ops`
+- `gstack` 主入口
+
+不建议把所有 `gstack-*`、`gsd-*` 或 Superpowers 子技能同时复制进 `~/.codex/skills`。需要时由 `codex-harness` 路由到对应流程，避免启动上下文臃肿和规则冲突。
+
 ### Claude Code
 
 优先运行：

@@ -11,7 +11,7 @@ Prefer these files, depending on project size:
 - `CLAUDE.md`: optional compatibility shim, usually pointing to `AGENTS.md`.
 - `docs/DEVELOPMENT.md`: local setup, commands, validation, common workflows.
 - `docs/ARCHITECTURE.md`: system boundaries, data flow, important decisions.
-- `.claude/scripts/verify-*.sh`: one command that validates the project.
+- `.claude/scripts/verify-all.sh`: one command that validates the project.
 - `.claude/rules/*.md`: path-specific rules only when genuinely useful.
 
 ## Context Freeze Checklist
