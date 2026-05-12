@@ -37,7 +37,24 @@ Codex Harness 是一个工作流路由层，根据任务类型自动选择合适
 - 自动检查依赖是否已安装
 - 如果缺少依赖，提供安装说明
 
-#### 方式二：安装到项目
+#### 方式二：安装到 Claude Code
+
+```bash
+# 从 skills 仓库根目录运行
+./scripts/install-claude-runtime.sh --check-deps
+```
+
+这会：
+- 安装 codex-harness (作为 claude-harness) 和 git-safe-ops 到 `~/.claude/skills/`
+- 自动检查依赖是否已安装
+- 如果缺少依赖，提供安装说明
+
+**Claude Code 架构**：
+- **Gstack**: 已作为 Claude Code skill 安装
+- **GSD**: 共享自 `~/.codex/get-shit-done`
+- **Superpowers**: 共享自 `~/.codex/superpowers`（包含 Claude plugin）
+
+#### 方式三：安装到项目
 
 ```bash
 # 安装到特定项目
@@ -130,6 +147,9 @@ Codex Harness 会使用 Superpowers TDD 流程：
 # 如果安装到 Codex
 ~/.codex/skills/codex-harness/scripts/check-dependencies.sh
 
+# 如果安装到 Claude Code
+~/.claude/skills/claude-harness/scripts/check-dependencies-claude.sh
+
 # 如果安装到项目
 ./.agent-packs/codex-harness/scripts/check-dependencies.sh
 ```
@@ -189,7 +209,24 @@ This will:
 - Automatically check if dependencies are installed
 - Provide installation instructions if dependencies are missing
 
-#### Option 2: Install to Project
+#### 方式二：安装到 Claude Code
+
+```bash
+# 从 skills 仓库根目录运行
+./scripts/install-claude-runtime.sh --check-deps
+```
+
+This will:
+- Install codex-harness (as claude-harness) and git-safe-ops to `~/.claude/skills/`
+- Automatically check if dependencies are installed
+- Provide installation instructions if dependencies are missing
+
+**Claude Code Architecture**:
+- **Gstack**: Already installed as Claude Code skill
+- **GSD**: Shared from `~/.codex/get-shit-done`
+- **Superpowers**: Shared from `~/.codex/superpowers` (includes Claude plugin)
+
+#### Option 3: Install to Project
 
 ```bash
 # Install to specific project
@@ -281,6 +318,9 @@ After installation, verify all dependencies are installed:
 ```bash
 # If installed to Codex
 ~/.codex/skills/codex-harness/scripts/check-dependencies.sh
+
+# If installed to Claude Code
+~/.claude/skills/claude-harness/scripts/check-dependencies-claude.sh
 
 # If installed to project
 ./.agent-packs/codex-harness/scripts/check-dependencies.sh

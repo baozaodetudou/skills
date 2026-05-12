@@ -2,16 +2,34 @@
 
 ## 一键安装 / One-Command Installation
 
+### Codex
+
 ```bash
 # 安装到 Codex 并检查依赖
 ./scripts/install-codex-runtime.sh --check-deps
 ```
 
+### Claude Code
+
+```bash
+# 安装到 Claude Code 并检查依赖
+./scripts/install-claude-runtime.sh --check-deps
+```
+
 ## 验证安装 / Verify Installation
+
+### Codex
 
 ```bash
 # 检查依赖
 ~/.codex/skills/codex-harness/scripts/check-dependencies.sh
+```
+
+### Claude Code
+
+```bash
+# 检查依赖
+~/.claude/skills/claude-harness/scripts/check-dependencies-claude.sh
 ```
 
 ## 使用 / Usage
@@ -20,6 +38,17 @@
 
 ```
 use $codex-harness for this task
+```
+
+### 在 Claude Code 中使用 / Use in Claude Code
+
+```
+use claude-harness for this task
+```
+
+或者直接引用工作流文件：
+```
+Read .claude/skills/claude-harness/references/gstack-decision.md for direction decisions
 ```
 
 ### 安装到项目 / Install to Project
@@ -48,15 +77,26 @@ use $codex-harness for this task
 
 ## 依赖 / Dependencies
 
+### Codex
+
 必需：
 - `~/.codex/skills/gstack` - 方向决策
 - `~/.codex/get-shit-done` - 上下文冻结
 - `~/.codex/superpowers` - 执行工作流
 
+### Claude Code
+
+必需：
+- `~/.claude/skills/gstack` - 方向决策（Claude Code skill）
+- `~/.codex/get-shit-done` - 上下文冻结（共享自 Codex）
+- `~/.codex/superpowers` - 执行工作流（共享自 Codex，包含 Claude plugin）
+
 可选：
 - `gh` (GitHub CLI) - 某些 Gstack 操作
 
 ## 常用命令 / Common Commands
+
+### Codex
 
 ```bash
 # 检查依赖
@@ -70,6 +110,19 @@ use $codex-harness for this task
 
 # 跳过依赖检查（不推荐）
 ./codex-harness/scripts/install-pack.sh --agent all --target . --skip-deps-check
+```
+
+### Claude Code
+
+```bash
+# 检查依赖
+~/.claude/skills/claude-harness/scripts/check-dependencies-claude.sh
+
+# 预览安装
+./codex-harness/scripts/install-pack.sh --agent claude --target . --dry-run
+
+# 强制覆盖安装
+./codex-harness/scripts/install-pack.sh --agent claude --target . --force
 ```
 
 ## 文档 / Documentation

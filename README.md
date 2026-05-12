@@ -15,6 +15,8 @@
 - Gemini CLI：[`git-safe-ops/GEMINI.md`](./git-safe-ops/GEMINI.md)
 - Codex skill：[`codex-harness/SKILL.md`](./codex-harness/SKILL.md)
 - Codex skill metadata：[`codex-harness/agents/openai.yaml`](./codex-harness/agents/openai.yaml)
+- Claude Code：[`codex-harness/CLAUDE.md`](./codex-harness/CLAUDE.md)
+- Gemini CLI：[`codex-harness/GEMINI.md`](./codex-harness/GEMINI.md)
 
 ## 使用方式
 
@@ -169,6 +171,28 @@ Codex 的常驻 skill 列表建议保持精简：
 ```
 
 安装结果会在项目根目录生成 `AGENTS.md` 和 `CLAUDE.md`，其中 `CLAUDE.md` 通过 `@AGENTS.md` 复用同一份规则。
+
+#### 安装 Codex Harness 到 Claude Code
+
+```bash
+# 一键安装到 Claude Code
+./scripts/install-claude-runtime.sh --check-deps
+```
+
+这会：
+- 安装 `codex-harness` (作为 `claude-harness`) 和 `git-safe-ops` 到 `~/.claude/skills/`
+- 检查依赖（Gstack、GSD、Superpowers）
+- 提供安装说明（如果缺少依赖）
+
+**架构说明**：
+- **Gstack**: 已作为 Claude Code skill 安装在 `~/.claude/skills/gstack`
+- **GSD**: 共享自 `~/.codex/get-shit-done`，Claude Code 可直接使用
+- **Superpowers**: 共享自 `~/.codex/superpowers`，包含 `.claude-plugin/` 支持
+
+验证依赖：
+```bash
+~/.claude/skills/claude-harness/scripts/check-dependencies-claude.sh
+```
 
 ### Gemini CLI
 
