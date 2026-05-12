@@ -12,8 +12,8 @@
 ### Claude Code
 
 ```bash
-# 安装到 Claude Code 并检查依赖
-./scripts/install-claude-runtime.sh --check-deps
+# 安装到 Claude Code 并自动安装依赖
+./scripts/install-claude-runtime.sh --install-deps --check-deps
 ```
 
 ## 验证安装 / Verify Installation
@@ -88,8 +88,8 @@ Read .claude/skills/claude-harness/references/gstack-decision.md for direction d
 
 必需：
 - `~/.claude/skills/gstack` - 方向决策（Claude Code skill）
-- `~/.codex/get-shit-done` - 上下文冻结（共享自 Codex）
-- `~/.codex/superpowers` - 执行工作流（共享自 Codex，包含 Claude plugin）
+- `~/.claude/get-shit-done` - 上下文冻结（独立安装）
+- `~/.claude/superpowers` - 执行工作流（独立安装，含 .claude-plugin/）
 
 可选：
 - `gh` (GitHub CLI) - 某些 Gstack 操作

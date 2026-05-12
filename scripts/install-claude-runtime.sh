@@ -10,22 +10,26 @@ STAMP="$(date +%Y%m%d_%H%M%S)"
 BACKUP_DIR="${BACKUP_ROOT}/${STAMP}_claude_runtime_install"
 DRY_RUN=0
 CHECK_DEPS=0
+INSTALL_DEPS=0
 
 usage() {
   cat <<'EOF'
 Usage:
-  scripts/install-claude-runtime.sh [--claude-home ~/.claude] [--check-deps] [--dry-run]
+  scripts/install-claude-runtime.sh [--claude-home ~/.claude] [--check-deps] [--install-deps] [--dry-run]
 
 Copies this repository's skills into the Claude Code runtime:
   ~/.claude/skills/codex-harness (as claude-harness)
   ~/.claude/skills/git-safe-ops
 
-Note: Gstack is already a Claude Code skill and doesn't need installation.
-Superpowers and GSD are shared from ~/.codex/ and work with Claude Code.
+Dependencies (Gstack, GSD, Superpowers) are installed independently to ~/.claude/:
+  ~/.claude/skills/gstack (already exists as Claude Code skill)
+  ~/.claude/get-shit-done (GSD - context freezing)
+  ~/.claude/superpowers (execution, TDD, debugging)
 
 Options:
   --claude-home     Claude home directory (default: ~/.claude)
   --check-deps      Check dependencies after installation
+  --install-deps    Automatically install missing dependencies (GSD, Superpowers)
   --dry-run         Show what would be done without executing
   -h, --help        Show this help message
 EOF
@@ -62,6 +66,10 @@ parse_args() {
         ;;
       --check-deps)
         CHECK_DEPS=1
+        shift
+        ;;
+      --install-deps)
+        INSTALL_DEPS=1
         shift
         ;;
       --dry-run)
@@ -108,6 +116,44 @@ install_skill() {
   run_cmd rsync -a --exclude '.DS_Store' --exclude '.git' "${source_dir}/" "${target_dir}/"
 }
 
+install_dependencies() {
+  if [ "${INSTALL_DEPS}" -ne 1 ]; then
+    return 0
+  fi
+
+  echo ""
+  echo "Installing dependencies..."
+  echo ""
+
+  # Install Superpowers
+  if [ ! -d "${CLAUDE_HOME}/superpowers" ]; then
+    echo "Installing Superpowers to ${CLAUDE_HOME}/superpowers..."
+    if [ "${DRY_RUN}" -eq 1 ]; then
+      echo "[dry-run] git clone https://github.com/obra/superpowers ${CLAUDE_HOME}/superpowers"
+    else
+      git clone https://github.com/obra/superpowers "${CLAUDE_HOME}/superpowers" || fail "Failed to install Superpowers"
+      echo "✓ Superpowers installed"
+    fi
+  else
+    echo "✓ Superpowers already installed at ${CLAUDE_HOME}/superpowers"
+  fi
+
+  # Install GSD
+  if [ ! -d "${CLAUDE_HOME}/get-shit-done" ]; then
+    echo "Installing Get Shit Done to ${CLAUDE_HOME}/get-shit-done..."
+    if [ "${DRY_RUN}" -eq 1 ]; then
+      echo "[dry-run] git clone https://github.com/cyanheads/get-shit-done ${CLAUDE_HOME}/get-shit-done"
+    else
+      git clone https://github.com/cyanheads/get-shit-done "${CLAUDE_HOME}/get-shit-done" || fail "Failed to install GSD"
+      echo "✓ Get Shit Done installed"
+    fi
+  else
+    echo "✓ Get Shit Done already installed at ${CLAUDE_HOME}/get-shit-done"
+  fi
+
+  echo ""
+}
+
 main() {
   parse_args "$@"
 
@@ -118,6 +164,9 @@ main() {
   install_skill "codex-harness" "claude-harness"
   install_skill "git-safe-ops"
 
+  # Install dependencies if requested
+  install_dependencies
+
   echo ""
   echo "OK: installed Claude Code runtime skills into ${CLAUDE_SKILLS}"
   if [ -d "${BACKUP_DIR}" ]; then
@@ -127,8 +176,17 @@ main() {
   echo ""
   echo "Note: Gstack is already installed as a Claude Code skill at:"
   echo "  ${CLAUDE_SKILLS}/gstack"
-  echo ""
-  echo "Superpowers and GSD are shared from ~/.codex/ and work with Claude Code."
+
+  if [ "${INSTALL_DEPS}" -eq 1 ]; then
+    echo ""
+    echo "Dependencies installed to:"
+    echo "  ${CLAUDE_HOME}/get-shit-done"
+    echo "  ${CLAUDE_HOME}/superpowers"
+  else
+    echo ""
+    echo "To install dependencies (GSD, Superpowers), run:"
+    echo "  $0 --install-deps"
+  fi
 
   if [ "${CHECK_DEPS}" -eq 1 ]; then
     echo ""

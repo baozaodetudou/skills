@@ -175,19 +175,20 @@ Codex 的常驻 skill 列表建议保持精简：
 #### 安装 Codex Harness 到 Claude Code
 
 ```bash
-# 一键安装到 Claude Code
-./scripts/install-claude-runtime.sh --check-deps
+# 一键安装到 Claude Code（包含自动安装依赖）
+./scripts/install-claude-runtime.sh --install-deps --check-deps
 ```
 
 这会：
 - 安装 `codex-harness` (作为 `claude-harness`) 和 `git-safe-ops` 到 `~/.claude/skills/`
-- 检查依赖（Gstack、GSD、Superpowers）
-- 提供安装说明（如果缺少依赖）
+- 自动安装 Superpowers 到 `~/.claude/superpowers`
+- 自动安装 GSD 到 `~/.claude/get-shit-done`
+- 检查所有依赖是否正确安装
 
-**架构说明**：
+**架构说明**（独立安装）:
 - **Gstack**: 已作为 Claude Code skill 安装在 `~/.claude/skills/gstack`
-- **GSD**: 共享自 `~/.codex/get-shit-done`，Claude Code 可直接使用
-- **Superpowers**: 共享自 `~/.codex/superpowers`，包含 `.claude-plugin/` 支持
+- **GSD**: 独立安装到 `~/.claude/get-shit-done`
+- **Superpowers**: 独立安装到 `~/.claude/superpowers`（包含 `.claude-plugin/`）
 
 验证依赖：
 ```bash

@@ -5,11 +5,10 @@ set -euo pipefail
 # 检查 Gstack、GSD、Superpowers 是否已安装
 
 readonly CLAUDE_HOME="${CLAUDE_HOME:-${HOME}/.claude}"
-readonly CODEX_HOME="${CODEX_HOME:-${HOME}/.codex}"
 readonly REQUIRED_DEPS=(
   "gstack:${CLAUDE_HOME}/skills/gstack"
-  "get-shit-done:${CODEX_HOME}/get-shit-done"
-  "superpowers:${CODEX_HOME}/superpowers"
+  "get-shit-done:${CLAUDE_HOME}/get-shit-done"
+  "superpowers:${CLAUDE_HOME}/superpowers"
 )
 
 MISSING_DEPS=()
@@ -89,22 +88,22 @@ prompt_installation() {
       ;;
     get-shit-done)
       echo "GSD (Get Shit Done) provides context freezing and project boundary management."
-      echo "It's shared from Codex and works with Claude Code."
       echo ""
       echo "Installation:"
-      echo "  git clone https://github.com/cyanheads/get-shit-done ${CODEX_HOME}/get-shit-done"
+      echo "  git clone https://github.com/cyanheads/get-shit-done ${CLAUDE_HOME}/get-shit-done"
       echo ""
-      echo "Note: GSD is installed in ~/.codex/ and shared between Codex and Claude Code."
+      echo "Or run the installation script with --install-deps:"
+      echo "  ./scripts/install-claude-runtime.sh --install-deps"
       ;;
     superpowers)
       echo "Superpowers provides execution, TDD, debugging, and review workflows."
-      echo "It has Claude plugin support and is shared from Codex."
+      echo "It includes .claude-plugin/ for Claude Code integration."
       echo ""
       echo "Installation:"
-      echo "  git clone https://github.com/obra/superpowers ${CODEX_HOME}/superpowers"
+      echo "  git clone https://github.com/obra/superpowers ${CLAUDE_HOME}/superpowers"
       echo ""
-      echo "Note: Superpowers is installed in ~/.codex/ and shared between Codex and Claude Code."
-      echo "      It includes .claude-plugin/ for Claude Code integration."
+      echo "Or run the installation script with --install-deps:"
+      echo "  ./scripts/install-claude-runtime.sh --install-deps"
       ;;
   esac
 }
@@ -146,8 +145,8 @@ main() {
     echo ""
     echo "Architecture:"
     echo "  - Gstack: Claude Code skill (${CLAUDE_HOME}/skills/gstack)"
-    echo "  - GSD: Shared from Codex (${CODEX_HOME}/get-shit-done)"
-    echo "  - Superpowers: Shared from Codex with Claude plugin (${CODEX_HOME}/superpowers)"
+    echo "  - GSD: Claude Code installation (${CLAUDE_HOME}/get-shit-done)"
+    echo "  - Superpowers: Claude Code installation with .claude-plugin/ (${CLAUDE_HOME}/superpowers)"
     exit 0
   fi
 
