@@ -10,17 +10,25 @@ STAMP="$(date +%Y%m%d_%H%M%S)"
 BACKUP_DIR="${BACKUP_ROOT}/${STAMP}_codex_runtime_install"
 DRY_RUN=0
 CLEAN_EXPOSED=0
+CHECK_DEPS=0
 
 usage() {
   cat <<'EOF'
 Usage:
-  scripts/install-codex-runtime.sh [--codex-home ~/.codex] [--clean-exposed] [--dry-run]
+  scripts/install-codex-runtime.sh [--codex-home ~/.codex] [--clean-exposed] [--check-deps] [--dry-run]
 
 Copies this repository's Codex skills into the Codex runtime:
   ~/.codex/skills/codex-harness
   ~/.codex/skills/git-safe-ops
 
 Existing runtime entries are moved to ~/.codex/skill-backups/<timestamp> first.
+
+Options:
+  --codex-home      Codex home directory (default: ~/.codex)
+  --clean-exposed   Clean up old exposed skill paths from other tools
+  --check-deps      Check codex-harness dependencies after installation
+  --dry-run         Show what would be done without executing
+  -h, --help        Show this help message
 EOF
 }
 
@@ -55,6 +63,10 @@ parse_args() {
         ;;
       --clean-exposed)
         CLEAN_EXPOSED=1
+        shift
+        ;;
+      --check-deps)
+        CHECK_DEPS=1
         shift
         ;;
       --dry-run)
@@ -133,6 +145,21 @@ main() {
   echo "OK: installed Codex runtime skills into ${CODEX_SKILLS}"
   if [ -d "${BACKUP_DIR}" ]; then
     echo "Backups: ${BACKUP_DIR}"
+  fi
+
+  if [ "${CHECK_DEPS}" -eq 1 ]; then
+    echo ""
+    echo "Checking codex-harness dependencies..."
+    deps_script="${CODEX_SKILLS}/codex-harness/scripts/check-dependencies.sh"
+    if [ -x "${deps_script}" ]; then
+      "${deps_script}" || true
+    else
+      echo "WARNING: Dependency check script not found: ${deps_script}"
+    fi
+  else
+    echo ""
+    echo "To verify codex-harness dependencies, run:"
+    echo "  ${CODEX_SKILLS}/codex-harness/scripts/check-dependencies.sh"
   fi
 }
 

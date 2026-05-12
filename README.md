@@ -56,11 +56,33 @@
 - `GSD`：固定项目上下文、边界、验证方式
 - `Superpowers`：执行、TDD、debug、review、收尾
 
-安装到 Codex：
+#### 依赖要求
+
+codex-harness 需要以下外部工具已安装：
+
+- **Gstack**: `~/.codex/skills/gstack` - 方向决策框架
+- **GSD**: `~/.codex/get-shit-done` - 上下文冻结和项目边界管理
+- **Superpowers**: `~/.codex/superpowers` - 执行、TDD、调试工作流
+
+安装 codex-harness 后，运行依赖检查：
+
+```bash
+~/.codex/skills/codex-harness/scripts/check-dependencies.sh
+```
+
+如果缺少依赖，脚本会提供安装说明。
+
+#### 安装到 Codex
 
 ```bash
 mkdir -p ~/.codex/skills
 cp -R /path/to/skills/codex-harness ~/.codex/skills/codex-harness
+```
+
+或使用一键安装脚本（推荐）：
+
+```bash
+./scripts/install-codex-runtime.sh --check-deps
 ```
 
 安装后重启 Codex。使用时可以直接说：
@@ -69,7 +91,23 @@ cp -R /path/to/skills/codex-harness ~/.codex/skills/codex-harness
 use $codex-harness for this task
 ```
 
-适合的场景：
+#### 安装到项目
+
+```bash
+./codex-harness/scripts/install-pack.sh --agent all --target /path/to/project
+```
+
+这会：
+- 把完整 pack 复制到目标项目的 `.agent-packs/codex-harness/`
+- 按 agent 类型把 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md` 安装到项目根目录
+- 检查依赖是否已安装（可用 `--skip-deps-check` 跳过）
+
+常用选项：
+- `--dry-run`：只打印将要执行的复制动作
+- `--force`：明确覆盖目标项目里已存在的同名文件
+- `--skip-deps-check`：跳过依赖检查（不推荐）
+
+#### 适合的场景
 
 - 需求模糊、需要先定方向
 - 长任务、跨会话、容易漂移的项目
@@ -101,13 +139,18 @@ Codex 的常驻 skill 列表建议保持精简：
 一键安装本仓库内的 Codex skills：
 
 ```bash
-./scripts/install-codex-runtime.sh
+./scripts/install-codex-runtime.sh --check-deps
 ```
+
+这会：
+- 安装 `codex-harness` 和 `git-safe-ops` 到 `~/.codex/skills/`
+- 检查 codex-harness 的依赖（Gstack、GSD、Superpowers）
+- 如果缺少依赖，提供安装说明
 
 如果旧环境里存在 `~/.agents/skills/superpowers`、`~/.agents/.skill-lock.json` 或 `~/.cc-switch/skills` 这类跨目录暴露，可以一并移到 `~/.codex/skill-backups/`：
 
 ```bash
-./scripts/install-codex-runtime.sh --clean-exposed
+./scripts/install-codex-runtime.sh --clean-exposed --check-deps
 ```
 
 安装完成后的边界：
@@ -139,13 +182,18 @@ Codex 的常驻 skill 列表建议保持精简：
 
 ```text
 codex-harness/
-├── SKILL.md
+├── SKILL.md                    # Codex skill 定义
+├── CLAUDE.md                   # Claude Code 支持
+├── GEMINI.md                   # Gemini CLI 支持
 ├── agents/
-│   └── openai.yaml
+│   └── openai.yaml            # Codex metadata
+├── scripts/
+│   ├── check-dependencies.sh  # 依赖检查脚本
+│   └── install-pack.sh        # 项目安装脚本
 └── references/
-    ├── gsd-context.md
-    ├── gstack-decision.md
-    ├── qa-checklist.md
+    ├── gsd-context.md         # GSD 使用指南
+    ├── gstack-decision.md     # Gstack 使用指南
+    ├── qa-checklist.md        # QA 检查清单
     ├── superpowers-debugging.md
     ├── superpowers-execution.md
     └── superpowers-tdd.md
@@ -162,7 +210,7 @@ git-safe-ops/
 └── references/
     └── git-rules.md
 scripts/
-└── install-codex-runtime.sh
+└── install-codex-runtime.sh   # 一键安装脚本
 ```
 
 ## 说明

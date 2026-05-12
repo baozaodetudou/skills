@@ -1,21 +1,25 @@
 ---
 name: codex-harness
 description: >
-  Unified Codex CLI/App harness for combining Gstack-style direction decisions,
-  GSD-style project context freezing, and Superpowers-style implementation,
-  TDD, debugging, review, and verification. Use when work is ambiguous,
-  architectural, multi-step, long-running, risky, needs project rules to be
-  stabilized, or the user asks for Superpowers, GSD, Gstack, harness, planning,
-  execution workflow, context engineering, QA, or autonomous development.
+  Workflow router for substantial Codex work. Delegates to Gstack (direction
+  decisions), GSD (context freezing), and Superpowers (execution, TDD,
+  debugging, review). Use when work is ambiguous, architectural, multi-step,
+  long-running, risky, needs project rules to be stabilized, or the user asks
+  for Superpowers, GSD, Gstack, harness, planning, execution workflow, context
+  engineering, QA, or autonomous development.
 ---
 
 # Codex Harness
 
 ## Purpose
 
-Use this skill as the single active workflow entry point for substantial Codex
-work. Keep global context small: load only the reference file that matches the
-task shape.
+Workflow router that delegates to external tools based on task shape:
+- **Gstack** (`~/.codex/skills/gstack`): Direction decisions
+- **GSD** (`~/.codex/get-shit-done`): Context freezing
+- **Superpowers** (`~/.codex/superpowers`): Execution workflows
+
+Keep global context small: load only the reference file that matches the task
+shape.
 
 ## Router
 
@@ -55,3 +59,12 @@ task shape.
 - Do not claim completion without command output or a clear reason validation
   could not run.
 - For git or GitHub operations, use `$git-safe-ops`.
+
+## Dependencies
+
+This router requires the following to be installed:
+- **Gstack**: `~/.codex/skills/gstack` - Direction decision framework
+- **GSD**: `~/.codex/get-shit-done` - Context freezing and project boundaries
+- **Superpowers**: `~/.codex/superpowers` - Execution, TDD, debugging workflows
+
+Run `scripts/check-dependencies.sh` to verify all dependencies are installed.

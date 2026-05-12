@@ -1,4 +1,20 @@
+name: codex-harness
+description: >
+  Workflow router for substantial Codex work. Delegates to Gstack (direction
+  decisions), GSD (context freezing), and Superpowers (execution, TDD,
+  debugging, review). Use when work is ambiguous, architectural, multi-step,
+  long-running, risky, needs project rules to be stabilized, or the user asks
+  for Superpowers, GSD, Gstack, harness, planning, execution workflow, context
+  engineering, QA, or autonomous development.
+instructions: |
+  Read SKILL.md for the complete workflow router guide.
+
+  Dependencies (must be installed):
+  - ~/.codex/skills/gstack
+  - ~/.codex/get-shit-done
+  - ~/.codex/superpowers
+
 interface:
   display_name: "Codex Harness"
-  short_description: "Decision, context, and execution workflow"
-  default_prompt: "Use $codex-harness to decide direction, freeze project context, and execute with verification."
+  short_description: "Workflow router: Gstack → GSD → Superpowers"
+  default_prompt: "Use $codex-harness to route work through Gstack (direction), GSD (context), and Superpowers (execution)."
